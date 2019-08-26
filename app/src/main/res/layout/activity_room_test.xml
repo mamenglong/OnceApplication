@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.RoomTestActivity">
+    <androidx.core.widget.NestedScrollView
+            android:id="@+id/ttt"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" >
+    <TextView
+            android:id="@+id/test1"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.core.widget.NestedScrollView>
+    
+    <androidx.core.widget.NestedScrollView
+            android:id="@+id/t1"
+            app:layout_constraintTop_toBottomOf="@id/ttt"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" >
+    <TextView
+            android:id="@+id/test"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.core.widget.NestedScrollView>
+    <Button
+            app:layout_constraintTop_toBottomOf="@id/t1"
+            android:id="@+id/btn_delete"
+            android:text="删除"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <Button
+            app:layout_constraintTop_toBottomOf="@id/btn_delete"
+            android:id="@+id/btn_insert"
+            android:text="添加"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

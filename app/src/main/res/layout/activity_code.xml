@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.CodeActivity">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+                android:id="@+id/codeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="77dp"
+                android:text="验证码:"/>
+
+        <EditText
+                android:id="@+id/vc_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/codeView"
+                android:layout_alignBottom="@+id/codeView"
+                android:layout_toRightOf="@+id/codeView"
+                android:ems="10">
+
+            <requestFocus/>
+        </EditText>
+
+        <Button
+                android:id="@+id/vc_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/vc_image"
+                android:layout_alignRight="@+id/vc_shuaixi"
+                android:layout_below="@+id/vc_shuaixi"
+                android:layout_marginTop="15dp"
+                android:text="确定"/>
+
+        <Button
+                android:id="@+id/vc_shuaixi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/vc_code"
+                android:layout_alignTop="@+id/vc_image"
+                android:layout_marginRight="20dp"
+                android:text="刷新验证码"/>
+
+        <ImageView
+                android:id="@+id/vc_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/codeView"
+                android:layout_below="@+id/vc_code"
+                android:layout_marginTop="25dp"
+                android:src="@mipmap/ic_launcher"/>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

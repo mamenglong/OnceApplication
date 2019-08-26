@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.mml.core">
+    <application>
+        <!-- 请填写应用实际的APP_ID -->
+        <meta-data
+                android:name="com.baidu.speech.APP_ID"
+                android:value="15971505"/> <!-- 请填写应用实际的API_KEY -->
+        <meta-data
+                android:name="com.baidu.speech.API_KEY"
+                android:value="xUuPsgxDTPoGsb2Ij2SgPDrR"/> <!-- 请填写应用实际的SECRET_KEY -->
+        <meta-data
+                android:name="com.baidu.speech.SECRET_KEY"
+                android:value="BRUV1UErPcZl1oFpepXdhLOhy9E7dOuO"/>
+
+    </application>
+</manifest>
