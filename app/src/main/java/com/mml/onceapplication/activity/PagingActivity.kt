@@ -1,4 +1,4 @@
-package com.mml.onceapplication
+package com.mml.onceapplication.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mml.onceapplication.R
 import com.mml.onceapplication.adapter.PageViewModel
 import com.mml.onceapplication.adapter.UserAdapter
 import com.mml.onceapplication.db.TestDatabase.Companion.CHEESE_DATA

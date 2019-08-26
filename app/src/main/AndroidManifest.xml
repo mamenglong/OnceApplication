@@ -24,19 +24,19 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PagingActivity"></activity>
-        <activity android:name=".activity.AppBarActivity"></activity>
-        <activity android:name=".activity.MapActivity"></activity>
-        <activity android:name=".activity.WakeUpRecogActivity"></activity>
-        <activity android:name=".activity.VoiceActivity"></activity>
+        <activity android:name=".activity.PagingActivity" />
+        <activity android:name=".activity.AppBarActivity" />
+        <activity android:name=".activity.MapActivity" />
+        <activity android:name=".activity.WakeUpRecogActivity" />
+        <activity android:name=".activity.VoiceActivity" />
 
         <service
                 android:name=".service.FloatWindowService"
                 android:enabled="true"
-                android:exported="true"></service>
+                android:exported="true" />
 
-        <activity android:name=".activity.WeatherActivity"></activity>
-        <activity android:name=".activity.FloatActivity"></activity>
+        <activity android:name=".activity.WeatherActivity" />
+        <activity android:name=".activity.FloatActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,6 +58,10 @@
         <meta-data
                 android:name="com.baidu.speech.SECRET_KEY"
                 android:value="BRUV1UErPcZl1oFpepXdhLOhy9E7dOuO" />
+
+
+        <meta-data android:value="5d639bb23fc195a2cf000445" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="Once" android:name="UMENG_CHANNEL"/>
 
         <service
                 android:name="com.baidu.speech.VoiceRecognitionService"

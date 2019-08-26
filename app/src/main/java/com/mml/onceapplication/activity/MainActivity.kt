@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import com.mml.onceapplication.PagingActivity
 import com.mml.onceapplication.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         Pair("天气", WeatherActivity::class.java) ,
         Pair("文字时钟",StageActivity::class.java),
         Pair("RoomTest",RoomTestActivity::class.java) ,
-        Pair("RoomPageTest",PagingActivity::class.java)
+        Pair("RoomPageTest", PagingActivity::class.java)
 
     )
     private fun initView(){

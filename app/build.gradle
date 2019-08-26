@@ -54,4 +54,8 @@ dependencies {
 
     // alternatively - without Android dependencies for testing
     testImplementation "android.arch.paging:common:1.0.1"
+    //umeng
+    implementation  'com.umeng.umsdk:analytics:8.0.0'
+    implementation  'com.umeng.umsdk:common:2.0.0'
+
 }
