@@ -92,12 +92,12 @@ class WakeUpRecogActivity : AppCompatActivity() {
     // 基于DEMO唤醒词集成第2.1, 2.2 发送开始事件开始唤醒
     private fun start() {
         val params = HashMap<String, Any>()
-        params[SpeechConstant.WP_WORDS_FILE] = "assets:///WakeUp.bin"
-        // "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+        params[SpeechConstant.WP_WORDS_FILE] = "assets://WakeUp.bin"
+        // "assets://WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
         params[com.baidu.speech.asr.SpeechConstant.APP_ID] = "15971505"
         // params.put(SpeechConstant.ACCEPT_AUDIO_DATA,true);
         // params.put(SpeechConstant.IN_FILE,"res:///com/baidu/android/voicedemo/wakeup.pcm");
-        // params里 "assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+        // params里 "assets://WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
         myWakeup?.start(params)
     }
 

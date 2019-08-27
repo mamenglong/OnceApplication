@@ -10,7 +10,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.mml.onceapplication.BuildConfig
+
 import com.mml.onceapplication.R
 import com.mml.onceapplication.view.FloatWindowSmallView
 import java.io.BufferedReader

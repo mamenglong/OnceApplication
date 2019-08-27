@@ -53,16 +53,16 @@ class MyWakeUp(val context: Context) {
      * 开启唤醒功能
      */
     fun start() {
-        if (!isStart) {
+        if (!isStart) {             
             isStart = true
-            val params = HashMap<String, Any>()
+            val params = java.util.HashMap<String, Any>(5)
             // 设置唤醒资源, 唤醒资源请到 http://yuyin.baidu.com/wake#m4 来评估和导出
             //  params["kws-file"] = "assets:///WakeUp.bin"
             params[SpeechConstant.WP_WORDS_FILE] = "assets://WakeUp.bin"
             params[com.baidu.speech.asr.SpeechConstant.APP_ID] = "15971505"
             params[com.baidu.speech.asr.SpeechConstant.ACCEPT_AUDIO_VOLUME] = false
 
-            val json = JSONObject(params).toString()
+            val json = JSONObject(params as Map<*,*>).toString()
             Log.i(TAG, json)
             mWpEventManager?.send("wp.start", json, null, 0, 0)
             Log.d(TAG, "----->唤醒已经开始工作了")

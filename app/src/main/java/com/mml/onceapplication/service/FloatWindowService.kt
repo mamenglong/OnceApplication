@@ -1,5 +1,6 @@
 package com.mml.onceapplication.service
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.Service
 import android.content.Context
@@ -28,10 +29,11 @@ class FloatWindowService : Service() {
      * 判断当前界面是否是桌面
      */
     private val isHome: Boolean
+        @SuppressLint("NewApi")
         get() {
             val mActivityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             val rti = mActivityManager.getRunningTasks(1)
-            return homes.contains(rti[0].topActivity.packageName)
+            return homes.contains(rti[0].topActivity!!.packageName)
         }
 
     /**

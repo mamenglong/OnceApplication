@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidStudioProjects-OnceApplication.iml" filepath="$PROJECT_DIR$/AndroidStudioProjects-OnceApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/OnceApplication.iml" filepath="$PROJECT_DIR$/OnceApplication.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/OnceApplication-app.iml" filepath="$PROJECT_DIR$/app/OnceApplication-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core/OnceApplication-core.iml" filepath="$PROJECT_DIR$/core/OnceApplication-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
     </modules>
