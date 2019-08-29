@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mml.onceapplication.R
+import com.mml.onceapplication.dialog.EasyDialog
+import com.mml.onceapplication.showToast
 import kotlinx.android.synthetic.main.activity_bottom_sheet.*
+import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 
 
 class BottomSheetActivity : AppCompatActivity() {
@@ -18,7 +21,7 @@ class BottomSheetActivity : AppCompatActivity() {
         initView()
     }
 
-    fun initView() {
+    private fun initView() {
         mBehavior = BottomSheetBehavior.from(bottom_sheet)
         mBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -44,6 +47,13 @@ class BottomSheetActivity : AppCompatActivity() {
 //            var behavior = BottomSheetBehavior.from(contenView)
 //            behavior.isHideable = false //此处设置表示禁止BottomSheetBehavior的执行
             dialog.show()
+        }
+        easy_dialog.setOnClickListener {
+            val dialog= EasyDialog()
+                .setLayoutRes(R.layout.bottom_sheet_dialog)
+                .setOnDismissCallback {  showToast("onDismissCallback") }
+                .convert { it-> it.btn.setText("修改了") }
+                .show(fragmentManager = supportFragmentManager)
         }
     }
 }

@@ -18,6 +18,11 @@
                 android:text="显示bottom_sheet_dialog"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/easy_dialog"
+            android:text="EasyDialog"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
