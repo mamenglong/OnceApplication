@@ -5,12 +5,13 @@ import android.view.View
 import android.view.WindowManager
 
 /**
- * Author: Menglong Ma
- * Email: mml2015@126.com
- * Date: 19-8-29 下午4:19
- * Description: This is EasyDialogConfig
- * Package: com.mml.onceapplication.dialog
- * Project: OnceApplication
+ * @Author: Menglong Ma
+ * @Email: mml2015@126.com
+ * @Date: 19-8-29 下午4:19
+ * @Description: This is EasyDialogConfig
+ * @Package: com.mml.onceapplication.dialog
+ * @see [百分比宽高和宽高只有一个生效,如果同时设置则使用宽高,默认为百分比宽高,宽高优先级较高,设置宽高时请使用px像素而不是dp]
+ * @Project: OnceApplication
  */
 data class EasyDialogConfig(
     /**
@@ -32,6 +33,7 @@ data class EasyDialogConfig(
      * 默认弹窗位置为中心
      */
     var gravity: Int = Gravity.CENTER,
+
     /**
      * 默认宽高为包裹内容
      */
@@ -40,7 +42,14 @@ data class EasyDialogConfig(
      * 默认宽高为包裹内容
      */
     var height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
-
+    /**
+     * 百分比宽
+     */
+    var percentWidth:Float = 0.8f,
+    /**
+     * 百分比高
+     */
+    var percentHeight: Float=0.5f,
     var layoutResId: Int = 0,
     var customDialogView: View? = null
 )

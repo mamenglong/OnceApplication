@@ -1,6 +1,7 @@
 package com.mml.onceapplication
 
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 
 
@@ -11,6 +12,11 @@ fun showToast(msg:String)= run {
     }
 }
 
+fun Any.log(msg: String,tag:String="tag"){
+    if (BuildConfig.DEBUG){
+        Log.i(tag,msg)
+    }
+}
 
 class Ext {
 

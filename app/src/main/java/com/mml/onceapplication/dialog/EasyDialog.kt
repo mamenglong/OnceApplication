@@ -62,8 +62,16 @@ class EasyDialog : BaseDialog() {
         dialogConfig.width=value
         return this
     }
+    fun setPercentWidth(float: Float):EasyDialog{
+        dialogConfig.percentWidth=float
+        return  this
+    }
     fun setHeight(value: Int): EasyDialog {
         dialogConfig.height=value
+        return this
+    }
+    fun setPercentHeight(value: Float): EasyDialog {
+        dialogConfig.percentHeight=value
         return this
     }
     fun setTag(value: String): EasyDialog {
@@ -73,5 +81,23 @@ class EasyDialog : BaseDialog() {
     fun setCancelableOutside(value: Boolean): EasyDialog {
         dialogConfig.isCancelableOutside=value
         return this
+    }
+    fun setDialogConfig(config: EasyDialogConfig):EasyDialog{
+        dialogConfig.let {
+            with(config){
+                it.TAG=TAG
+                it.isCancelableOutside=isCancelableOutside
+                it.percentHeight=percentHeight
+                it.percentWidth=percentWidth
+                it.width=width
+                it.height=height
+                it.gravity=gravity
+                it.layoutResId=layoutResId
+                it.customDialogView=customDialogView
+                it.dialogAnimationRes=dialogAnimationRes
+                it.dimAmount=dimAmount
+            }
+        }
+        return  this
     }
 }

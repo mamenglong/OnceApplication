@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.mml.onceapplication.log
+import kotlin.math.log
+import kotlin.math.roundToInt
 
 
 /**
@@ -18,7 +21,7 @@ import androidx.fragment.app.FragmentManager
  * Project: OnceApplication
  */
 abstract class BaseDialog : DialogFragment() {
-    val dialogConfig:EasyDialogConfig=EasyDialogConfig()
+   protected val dialogConfig:EasyDialogConfig=EasyDialogConfig()
 
     protected abstract fun bindView(view: View)
 
@@ -33,7 +36,8 @@ abstract class BaseDialog : DialogFragment() {
             view = inflater.inflate(dialogConfig.layoutResId, container, false)
         }
         dialogConfig.customDialogView?.let { view=it }
-        view?.apply { bindView(this) }?:throw NullPointerException("Root View is null.property layoutResId:(Int) or customDialogView:(View) should be initialized.")
+       // log(dialogConfig.width.toString()+" "+view?.measuredWidth+" "+ view?.layoutParams?.width,tag="BaseDialog")
+        view?.apply { bindView(this)}?:throw NullPointerException("Root View is null.property layoutResId:(Int) or customDialogView:(View) should be initialized.")
         return view
     }
 
@@ -56,8 +60,9 @@ abstract class BaseDialog : DialogFragment() {
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             //设置宽高
             val layoutParams = window.attributes
-                layoutParams.width = dialogConfig.width
-                layoutParams.height = dialogConfig.height
+
+            layoutParams.width =if (dialogConfig.width!=WindowManager.LayoutParams.WRAP_CONTENT) dialogConfig.width  else (getScreenWidth(context!!)*dialogConfig.percentWidth).toInt()
+            layoutParams.height = if (dialogConfig.height!= WindowManager.LayoutParams.WRAP_CONTENT) dialogConfig.height else (getScreenHeight(context!!)*dialogConfig.percentHeight).toInt()
             //透明度
             layoutParams.dimAmount = dialogConfig.dimAmount
             //位置
@@ -67,10 +72,11 @@ abstract class BaseDialog : DialogFragment() {
     }
 
     fun show(fragmentManager: FragmentManager) {
+
         show(fragmentManager, dialogConfig.TAG)
     }
     //获取设备屏幕宽度
-    fun getScreenWidth(context: Context): Int {
+    private fun getScreenWidth(context: Context): Int {
         return context.resources.displayMetrics.widthPixels
     }
 

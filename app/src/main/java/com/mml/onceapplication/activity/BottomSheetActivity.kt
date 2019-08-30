@@ -50,9 +50,9 @@ class BottomSheetActivity : AppCompatActivity() {
         }
         easy_dialog.setOnClickListener {
             val dialog= EasyDialog()
-                .setLayoutRes(R.layout.bottom_sheet_dialog)
+                .setLayoutRes(R.layout.dialog_easy_sample)
                 .setOnDismissCallback {  showToast("onDismissCallback") }
-                .convert { it-> it.btn.setText("修改了") }
+                .convert { it-> }
                 .show(fragmentManager = supportFragmentManager)
         }
     }
