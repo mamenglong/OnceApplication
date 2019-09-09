@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mml.onceapplication.R
+import com.mml.onceapplication.dialog.CustomDialog
 import com.mml.onceapplication.dialog.EasyDialog
+import com.mml.onceapplication.dialog.SimpleDialog
 import com.mml.onceapplication.showToast
 import kotlinx.android.synthetic.main.activity_bottom_sheet.*
-import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 
 
 class BottomSheetActivity : AppCompatActivity() {
@@ -49,11 +50,24 @@ class BottomSheetActivity : AppCompatActivity() {
             dialog.show()
         }
         easy_dialog.setOnClickListener {
-            val dialog= EasyDialog()
+/*            val dialog= CustomDialog()
+                .setLayoutRes(R.layout.dialog_easy_sample)
+                .setOnDismissCallback {  showToast("onDismissCallback") }
+                .convert { it-> }
+                .show(fragmentManager = supportFragmentManager)*/
+
+
+            val sss=EasyDialog.init<CustomDialog>(EasyDialog.DialogType.CUSTOM)
                 .setLayoutRes(R.layout.dialog_easy_sample)
                 .setOnDismissCallback {  showToast("onDismissCallback") }
                 .convert { it-> }
                 .show(fragmentManager = supportFragmentManager)
+        }
+        simple_dialog.setOnClickListener {
+            val siampleDialog=EasyDialog.init<SimpleDialog>(EasyDialog.DialogType.SIMPLE).init(this)
+
+                .show()
+
         }
     }
 }

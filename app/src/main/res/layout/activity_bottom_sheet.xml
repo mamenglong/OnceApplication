@@ -23,6 +23,11 @@
             android:id="@+id/easy_dialog"
             android:text="EasyDialog"
             android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/simple_dialog"
+            android:text="SimpleDialog"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView

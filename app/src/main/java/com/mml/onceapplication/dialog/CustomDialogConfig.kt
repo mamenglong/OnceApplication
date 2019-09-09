@@ -3,22 +3,23 @@ package com.mml.onceapplication.dialog
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import androidx.fragment.app.FragmentManager
 
 /**
  * @Author: Menglong Ma
  * @Email: mml2015@126.com
  * @Date: 19-8-29 下午4:19
- * @Description: This is EasyDialogConfig
+ * @Description: This is CustomDialogConfig
  * @Package: com.mml.onceapplication.dialog
  * @see [百分比宽高和宽高只有一个生效,如果同时设置则使用宽高,默认为百分比宽高,宽高优先级较高,设置宽高时请使用px像素而不是dp]
  * @Project: OnceApplication
  */
-data class EasyDialogConfig(
+data class CustomDialogConfig(
     /**
      * 是否允许点击窗口外面消失
      */
     var isCancelableOutside: Boolean = true,
-    var TAG: String = "EasyDialogConfig",
+    var TAG: String = "CustomDialogConfig",
     val DEFAULT_DIMAMOUNT: Float = 0.2f,
     /**
      * 默认透明度为0.2
@@ -51,5 +52,6 @@ data class EasyDialogConfig(
      */
     var percentHeight: Float=0.5f,
     var layoutResId: Int = 0,
-    var customDialogView: View? = null
+    var customDialogView: View? = null,
+    var fragmentManager: FragmentManager?=null
 )

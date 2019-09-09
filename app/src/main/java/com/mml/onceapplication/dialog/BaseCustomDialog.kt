@@ -7,9 +7,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.mml.onceapplication.log
-import kotlin.math.log
-import kotlin.math.roundToInt
 
 
 /**
@@ -20,8 +17,8 @@ import kotlin.math.roundToInt
  * Package: com.mml.onceapplication.dialog
  * Project: OnceApplication
  */
-abstract class BaseDialog : DialogFragment() {
-   protected val dialogConfig:EasyDialogConfig=EasyDialogConfig()
+abstract class BaseCustomDialog : DialogFragment() {
+   protected val dialogConfig:CustomDialogConfig=CustomDialogConfig()
 
     protected abstract fun bindView(view: View)
 
@@ -36,7 +33,7 @@ abstract class BaseDialog : DialogFragment() {
             view = inflater.inflate(dialogConfig.layoutResId, container, false)
         }
         dialogConfig.customDialogView?.let { view=it }
-       // log(dialogConfig.width.toString()+" "+view?.measuredWidth+" "+ view?.layoutParams?.width,tag="BaseDialog")
+       // log(dialogConfig.width.toString()+" "+view?.measuredWidth+" "+ view?.layoutParams?.width,tag="BaseCustomDialog")
         view?.apply { bindView(this)}?:throw NullPointerException("Root View is null.property layoutResId:(Int) or customDialogView:(View) should be initialized.")
         return view
     }
