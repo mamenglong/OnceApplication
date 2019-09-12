@@ -12,7 +12,7 @@ import java.lang.NullPointerException
  * Package: com.mml.onceapplication.dialog
  * Project: OnceApplication
  */
-class SimpleDialog:IDialogCallBack<SimpleDialog>,ISimpleDialogConfig<SimpleDialog>{
+class SimpleDialog:ISimpleDialogConfig<SimpleDialog>{
     private val simpleDialogConfig=SimpleDialogConfig()
     fun init(activity: Activity):SimpleDialog{
         simpleDialogConfig.activity=activity
@@ -31,10 +31,10 @@ class SimpleDialog:IDialogCallBack<SimpleDialog>,ISimpleDialogConfig<SimpleDialo
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(confirmText) { _, _ ->
-                    onConfirmClick.invoke()
+                    onConfirmClickCallback.invoke()
                 }
                 .setNegativeButton(cancelText) { _, _ ->
-                    onCancelClick.invoke()
+                    onCancelClickCallback.invoke()
                 }
                 .setCancelable(cancelable)
                 .create()
@@ -62,18 +62,18 @@ class SimpleDialog:IDialogCallBack<SimpleDialog>,ISimpleDialogConfig<SimpleDialo
         return this
     }
 
-    override fun setOnCancelClick(onCancelCallback: () -> Unit): SimpleDialog {
-        simpleDialogConfig.onCancelClick=onCancelCallback
+    override fun setOnCancelClickCallback(cancelCallback: () -> Unit): SimpleDialog {
+        simpleDialogConfig.onCancelClickCallback=cancelCallback
         return this
     }
 
-    override fun setOnConfirmClick(onConfirmCallback: () -> Unit): SimpleDialog {
-        simpleDialogConfig.onConfirmClick=onConfirmCallback
+    override fun setOnConfirmClickCallback(confirmCallback: () -> Unit): SimpleDialog {
+        simpleDialogConfig.onConfirmClickCallback=confirmCallback
         return this
     }
 
-    override fun setOnDismissCallback(onDismissCallback: () -> Unit): SimpleDialog {
-        simpleDialogConfig.onDismissCallback=onDismissCallback
+    override fun setOnDismissCallback(dismissCallback: () -> Unit): SimpleDialog {
+        simpleDialogConfig.onDismissCallback=dismissCallback
         return this
     }
 
@@ -89,22 +89,6 @@ class SimpleDialog:IDialogCallBack<SimpleDialog>,ISimpleDialogConfig<SimpleDialo
 
     override fun setConfirmText(value: String): SimpleDialog {
         simpleDialogConfig.confirmText=value
-        return this
-    }
-
-
-    override fun onCancel(onCancelCallback: () -> Unit): SimpleDialog {
-        simpleDialogConfig.onCancelClick=onCancelCallback
-        return this
-    }
-
-    override fun onDismiss(onDismissCallback: () -> Unit): SimpleDialog {
-        simpleDialogConfig.onDismissCallback=onDismissCallback
-        return this
-    }
-
-    override fun onConfirm(onConfirmCallback: () -> Unit): SimpleDialog {
-        simpleDialogConfig.onConfirmClick=onConfirmCallback
         return this
     }
 }

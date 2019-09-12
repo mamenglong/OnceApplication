@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mml.onceapplication.R
-import com.mml.onceapplication.dialog.CustomDialog
-import com.mml.onceapplication.dialog.EasyDialog
-import com.mml.onceapplication.dialog.SimpleDialog
+import com.mml.onceapplication.dialog.*
 import com.mml.onceapplication.showToast
 import kotlinx.android.synthetic.main.activity_bottom_sheet.*
 
@@ -64,10 +62,32 @@ class BottomSheetActivity : AppCompatActivity() {
                 .show(fragmentManager = supportFragmentManager)
         }
         simple_dialog.setOnClickListener {
-            val siampleDialog=EasyDialog.init<SimpleDialog>(EasyDialog.DialogType.SIMPLE).init(this)
+            val siampleDialog=EasyDialog.init<SimpleEditTextDialog>(EasyDialog.DialogType.SIMPLEEDITTEXT).init(this)
 
                 .show()
-
         }
+        val item= arrayListOf<Any>("1","2","3","4","5")
+        simple_dialog_list.setOnClickListener {
+            val siampleDialog=EasyDialog.init<SimpleListDialog>(EasyDialog.DialogType.LIST).init(this)
+                .setItems(item)
+                .setOnConfirmClickCallback {
+                    showToast(it)
+                }
+                .show()
+        }
+        simple_dialog_single.setOnClickListener {
+            val siampleDialog=EasyDialog.init<SimpleSingleChoiceDialog>(EasyDialog.DialogType.SINGLECHOICE).init(this)
+                .setItems(item)
+                .setOnConfirmClickCallback {v,p->
+                    showToast(v.toString())
+                }
+                .show()
+        }
+        simple_dialog_multi.setOnClickListener {
+            val siampleDialog=EasyDialog.init<SimpleMultiChoiceDialog>(EasyDialog.DialogType.MULTICHOICE).init(this)
+                .setItems(item)
+                .show()
+        }
+
     }
 }

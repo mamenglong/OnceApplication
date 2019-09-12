@@ -28,6 +28,21 @@
             android:id="@+id/simple_dialog"
             android:text="SimpleDialog"
             android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/simple_dialog_list"
+            android:text="SimpleDialogLIST"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/simple_dialog_single"
+            android:text="SimpleDialogSIngle"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/simple_dialog_multi"
+            android:text="SimpleDialogMULTI"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView

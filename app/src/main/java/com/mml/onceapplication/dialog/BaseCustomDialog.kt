@@ -78,7 +78,7 @@ abstract class BaseCustomDialog : DialogFragment() {
     }
 
     //获取设备屏幕高度
-    fun getScreenHeight(context: Context): Int {
+    private fun getScreenHeight(context: Context): Int {
         return context.resources.displayMetrics.heightPixels
     }
 }
