@@ -39,6 +39,9 @@ class SimpleMultiChoiceDialog:ISimpleMultiChoiceDialogConfig<SimpleMultiChoiceDi
         val adapter= ArrayAdapter<Any>(simpleDialogConfig.activity!!, com.mml.onceapplication.R.layout.support_simple_spinner_dropdown_item,simpleDialogConfig.items!!)
         with(simpleDialogConfig) {
             val array= arrayOfNulls<CharSequence>(items.size)
+            items.forEachIndexed { index, any ->
+                array[index]=any.toString()
+            }
             val booleanArray=BooleanArray(items.size)
             activity?:throw NullPointerException("parameter activity is null ,please call init(activity: Activity) before show()")
            val dialog= AlertDialog.Builder(activity)
@@ -56,6 +59,9 @@ class SimpleMultiChoiceDialog:ISimpleMultiChoiceDialogConfig<SimpleMultiChoiceDi
                         if (b) {
                             mSelectItemPositions.add(index)
                             mSelectItemValues.add(items[index])
+                        } else{
+                            mSelectItemPositions.remove(index)
+                            mSelectItemValues.remove(items[index])
                         }
                     }
                     onConfirmClickCallback.invoke(mSelectItemValues,mSelectItemPositions)

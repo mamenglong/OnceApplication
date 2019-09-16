@@ -20,10 +20,8 @@ class SimpleSingleChoiceDialog:ISimpleSingleChoiceDialogConfig<SimpleSingleChoic
 
 
     private val simpleDialogConfig=SimpleSingleChoiceDialogConfig()
-    private var editText: EditText?=null
     fun init(activity: Activity):SimpleSingleChoiceDialog{
         simpleDialogConfig.activity=activity
-        editText=EditText(activity)
         return this
     }
     /**
@@ -36,10 +34,13 @@ class SimpleSingleChoiceDialog:ISimpleSingleChoiceDialogConfig<SimpleSingleChoic
         val adapter= ArrayAdapter<Any>(simpleDialogConfig.activity!!, com.mml.onceapplication.R.layout.support_simple_spinner_dropdown_item,simpleDialogConfig.items!!)
         with(simpleDialogConfig) {
             val array= arrayOfNulls<CharSequence>(items.size)
+          items.forEachIndexed { index, any ->
+              array[index]=any.toString()
+          }  
             activity?:throw NullPointerException("parameter activity is null ,please call init(activity: Activity) before show()")
            val dialog= AlertDialog.Builder(activity)
                 .setTitle(title)
-               .setSingleChoiceItems( items.toArray(array),-1){ _, pos->
+               .setSingleChoiceItems( array,-1){ _, pos->
                    mSelectItemPosition=pos
                    mSelectItemValue= items[pos]
                    log(tag="SimpleEditTextDialog  setSingleChoiceItems",msg ="${items[pos]}")
