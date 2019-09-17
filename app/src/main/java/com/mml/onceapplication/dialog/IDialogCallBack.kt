@@ -5,6 +5,7 @@ import android.support.v4.app.INotificationSideChannel
 import android.widget.Toast
 import com.mml.onceapplication.BuildConfig
 import com.mml.onceapplication.OnceApplication
+import java.util.zip.Deflater
 
 /**
  * Author: Menglong Ma
@@ -57,9 +58,11 @@ interface ISimpleListDialogConfig<T>:IBaseSimpleDialogConfig<T>{
 }
 interface ISimpleSingleChoiceDialogConfig<T>:IBaseSimpleDialogConfig<T>{
     fun setOnConfirmClickCallback(confirmCallback: (value:Any,pos:Int) -> Unit):T
+    fun setDefaultSelect(default:Int):T
     fun setItems(items:ArrayList<Any>):T
 }
 interface ISimpleMultiChoiceDialogConfig<T>:IBaseSimpleDialogConfig<T>{
     fun setOnConfirmClickCallback(confirmCallback: (values:ArrayList<Any>,poss:ArrayList<Int>) -> Unit):T
+    fun setDefaultSelect(default:MutableList<Int>):T
     fun setItems(items:ArrayList<Any>):T
 }

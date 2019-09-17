@@ -67,9 +67,11 @@ class SimpleListDialog:ISimpleListDialogConfig<SimpleListDialog>{
             val m = activity!!.windowManager
             val d = m.defaultDisplay  //为获取屏幕宽、高
             val p = dialog.window!!.attributes  //获取对话框当前的参数值
-            p.height = (d.height * 0.5).toInt()   //高度设置为屏幕的0.3
-            p.width = (d.width * 0.8).toInt()    //宽度设置为屏幕的0.5
-            dialog.window!!.attributes = p     //设置生效
+            if (p.height>(d.height * 0.5).toInt()) {
+                p.height = (d.height * 0.5).toInt()   //高度设置为屏幕的0.3
+                p.width = (d.width * 0.8).toInt()    //宽度设置为屏幕的0.5
+                dialog.window!!.attributes = p     //设置生效
+            }
         }
     }
     override fun isCancelable(isCan: Boolean): SimpleListDialog {

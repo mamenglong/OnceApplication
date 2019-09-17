@@ -19,6 +19,7 @@ import com.mml.onceapplication.log
 class SimpleSingleChoiceDialog:ISimpleSingleChoiceDialogConfig<SimpleSingleChoiceDialog>{
 
 
+
     private val simpleDialogConfig=SimpleSingleChoiceDialogConfig()
     fun init(activity: Activity):SimpleSingleChoiceDialog{
         simpleDialogConfig.activity=activity
@@ -40,12 +41,13 @@ class SimpleSingleChoiceDialog:ISimpleSingleChoiceDialogConfig<SimpleSingleChoic
             activity?:throw NullPointerException("parameter activity is null ,please call init(activity: Activity) before show()")
            val dialog= AlertDialog.Builder(activity)
                 .setTitle(title)
-               .setSingleChoiceItems( array,-1){ _, pos->
+               .setSingleChoiceItems( array,defaultSelect){ _, pos->
                    mSelectItemPosition=pos
                    mSelectItemValue= items[pos]
-                   log(tag="SimpleEditTextDialog  setSingleChoiceItems",msg ="${items[pos]}")
+                   log(tag="SimpleSingleChoiceDialog  setSingleChoiceItems",msg ="${items[pos]}")
                }
                .setPositiveButton(confirmText) { _, _ ->
+                   log(tag="SimpleSingleChoiceDialog  onConfirmClickCallback",msg ="${mSelectItemValue} $mSelectItemPosition")
                     onConfirmClickCallback.invoke(mSelectItemValue!!,mSelectItemPosition)
                 }
                 .setNegativeButton(cancelText) { _, _ ->
@@ -59,10 +61,16 @@ class SimpleSingleChoiceDialog:ISimpleSingleChoiceDialogConfig<SimpleSingleChoic
             val m = activity!!.windowManager
             val d = m.defaultDisplay  //为获取屏幕宽、高
             val p = dialog.window!!.attributes  //获取对话框当前的参数值
-            p.height = (d.height * 0.5).toInt()   //高度设置为屏幕的0.3
-            p.width = (d.width * 0.8).toInt()    //宽度设置为屏幕的0.5
-            dialog.window!!.attributes = p     //设置生效
+            if (p.height>(d.height * 0.5).toInt()) {
+                p.height = (d.height * 0.5).toInt()   //高度设置为屏幕的0.3
+                p.width = (d.width * 0.8).toInt()    //宽度设置为屏幕的0.5
+                dialog.window!!.attributes = p     //设置生效
+            }
         }
+    }
+    override fun setDefaultSelect(default: Int): SimpleSingleChoiceDialog {
+        simpleDialogConfig.defaultSelect=default
+        return this
     }
     override fun isCancelable(isCan: Boolean): SimpleSingleChoiceDialog {
         simpleDialogConfig.cancelable=isCan

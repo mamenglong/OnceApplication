@@ -66,7 +66,7 @@ class BottomSheetActivity : AppCompatActivity() {
 
                 .show()
         }
-        val item= arrayListOf<Any>("1","2","3","4","5")
+        val item= arrayListOf<Any>(false,"2",3,"4","5")
         simple_dialog_list.setOnClickListener {
             val siampleDialog=EasyDialog.init<SimpleListDialog>(EasyDialog.DialogType.LIST).init(this)
                 .setItems(item)
@@ -78,6 +78,7 @@ class BottomSheetActivity : AppCompatActivity() {
         simple_dialog_single.setOnClickListener {
             val siampleDialog=EasyDialog.init<SimpleSingleChoiceDialog>(EasyDialog.DialogType.SINGLECHOICE).init(this)
                 .setItems(item)
+                .setDefaultSelect(3)
                 .setOnConfirmClickCallback {v,p->
                     showToast(v.toString())
                 }

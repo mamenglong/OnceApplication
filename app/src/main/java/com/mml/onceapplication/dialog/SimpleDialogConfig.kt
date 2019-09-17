@@ -45,6 +45,7 @@ data class SimpleListDialogConfig(
 data class SimpleSingleChoiceDialogConfig(
         var TAG: String = "SimpleSingleChoiceDialogConfig",
         var items:ArrayList<Any> = ArrayList(),
+        var defaultSelect:Int=-1,
         var mSelectItemValue:Any? = null,
         var mSelectItemPosition: Int=-1,
         var onConfirmClickCallback: (value:Any,pos:Int) -> Unit = { _,_->showDebugToast("onConfirmClickCallback")}
@@ -52,6 +53,7 @@ data class SimpleSingleChoiceDialogConfig(
 data class SimpleMultiChoiceDialogConfig(
         var TAG: String = "SimpleMultiChoiceDialogConfig",
         var items:MutableList<Any> = mutableListOf(),
+        var defaultSelects:MutableList<Int> = mutableListOf(),
         var mSelectItemValues:ArrayList<Any> = ArrayList(),
         var mSelectItemPositions: ArrayList<Int> = ArrayList(),
         var onConfirmClickCallback: (values:ArrayList<Any>,poss:ArrayList<Int>) -> Unit = { _,_->showDebugToast("onConfirmClickCallback")}

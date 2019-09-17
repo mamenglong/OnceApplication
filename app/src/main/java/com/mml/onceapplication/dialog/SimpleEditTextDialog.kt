@@ -2,9 +2,11 @@ package com.mml.onceapplication.dialog
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.util.Log
 import android.widget.ArrayAdapter
 import java.lang.NullPointerException
 import android.widget.EditText
+import com.mml.onceapplication.log
 
 
 /**
@@ -57,6 +59,7 @@ class SimpleEditTextDialog:ISimpleEditTextDialogConfig<SimpleEditTextDialog>{
                    log(tag="SimpleEditTextDialog  setMultiChoiceItems",msg ="$booleanValue")
                }*/
                .setPositiveButton(confirmText) { _, _ ->
+                   log(tag="SimpleEditTextDialog   ",msg = editText?.text.toString())
                     onConfirmClickCallback.invoke(editText?.text.toString())
                 }
                 .setNegativeButton(cancelText) { _, _ ->
@@ -70,9 +73,11 @@ class SimpleEditTextDialog:ISimpleEditTextDialogConfig<SimpleEditTextDialog>{
             val m = activity!!.windowManager
             val d = m.defaultDisplay  //为获取屏幕宽、高
             val p = dialog.window!!.attributes  //获取对话框当前的参数值
-            p.height = (d.height * 0.5).toInt()   //高度设置为屏幕的0.3
-            p.width = (d.width * 0.8).toInt()    //宽度设置为屏幕的0.5
-            dialog.window!!.attributes = p     //设置生效
+            if (p.height>(d.height * 0.5).toInt()) {
+                p.height = (d.height * 0.5).toInt()   //高度设置为屏幕的0.3
+                p.width = (d.width * 0.8).toInt()    //宽度设置为屏幕的0.5
+                dialog.window!!.attributes = p     //设置生效
+            }
         }
     }
     override fun isCancelable(isCan: Boolean): SimpleEditTextDialog {
