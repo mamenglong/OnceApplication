@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mml.updatelibrary" >
+    <application
+        android:networkSecurityConfig="@xml/network_security_config"
+        >
+        <provider
+            android:name="GlobalContextProvider"
+            android:authorities="${applicationId}.cp"
+            android:exported="false"
+            android:multiprocess="true"/>
+    </application>
+</manifest>

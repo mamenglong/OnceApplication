@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         Pair("天气", WeatherActivity::class.java) ,
         Pair("文字时钟",StageActivity::class.java),
         Pair("RoomTest",RoomTestActivity::class.java) ,
+        Pair("更新",UpdateActivity::class.java) ,
         Pair("RoomPageTest", PagingActivity::class.java)
 
     )

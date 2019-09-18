@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">UpdateLibrary</string>
+    <string name="update_content">有新版本,立即更新!</string>
+    <string name="update_title">版本更新</string>
+</resources>
