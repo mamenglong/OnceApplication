@@ -1,22 +1,22 @@
 {
-  "updateTitle":"",
-  "updateContent":"",
-  "apkUrl":"",
-  "config":{
-    "isDebug":true,
-    "alwaysShow":true,
-    "thisTimeShow":false,
-   "force":false,
+  "updateTitle": "",
+  "updateContent": "",
+  "apkUrl": "",
+  "config": {
+    "isDebug": true,
+    "alwaysShow": true,
+    "thisTimeShow": false,
+    "force": false,
     "apkSavePath": "",
     "apkSaveName": "",
-    "downloadBy":0,
-    "justDownload":false,
-    "checkWifi":false,
-    "isShowNotification":true,
-    "notifyImgRes":0,
-    "needCheckMd5":false,
-    "showDownloadingToast":true,
-    "serverVersionName":"",
-    "serverVersionCode":0
+    "downloadBy": 0,
+    "justDownload": false,
+    "checkWifi": false,
+    "isShowNotification": true,
+    "notifyImgRes": 0,
+    "needCheckMd5": false,
+    "showDownloadingToast": true,
+    "serverVersionName": "",
+    "serverVersionCode": 0
   }
 }
