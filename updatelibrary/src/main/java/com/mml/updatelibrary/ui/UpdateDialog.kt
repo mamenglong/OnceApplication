@@ -1,7 +1,10 @@
 package com.mml.updatelibrary.ui
 
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.gson.responseObject
+
 import com.github.kittinunf.fuel.httpGet
+import com.mml.updatelibrary.data.UpdateInfo
 import com.mml.updatelibrary.data.UpdateUrl
 import com.mml.updatelibrary.log
 import java.io.File
@@ -19,22 +22,23 @@ class UpdateDialog {
 
     fun checkUpdate() {
         val httpAsync = UpdateUrl().url.httpGet()
-            .responseString { request, response, result ->
-                val input = response.body().toStream()
-                val string = input.bufferedReader().readLines().toString()
-                println(string)
-                log(msg = "content:${string}", tag = "UpdateDialog")
-                log(msg = "content:${result.component1()}", tag = "UpdateDialog")
-            }
-        /*       .responseObject<UpdateInfo>{ request, response, result ->
-               log(msg = "content:${response.body()}",tag ="UpdateDialog" )
-                  result.fold(success ={updateInfo->
-                      log(msg = "content:$updateInfo",tag ="UpdateDialog" )
 
-                  },failure = {fuelError ->
-                      log(msg = "content:$fuelError",tag ="UpdateDialog" )
-                  })
-           }*/
+            /*  .responseString { request, response, result ->
+                  val input = response.body().toStream()
+                  val string = input.bufferedReader().readLines().toString()
+                  println(string)
+                  log(msg = "content:${string}", tag = "UpdateDialog")
+                  log(msg = "content:${result.component1()}", tag = "UpdateDialog")
+              }*/
+            .responseObject<UpdateInfo> { response, _, result ->
+                log(msg = "content:${response.body}", tag = "UpdateDialog")
+                result.fold(success = { updateInfo ->
+                    log(msg = "content:$updateInfo", tag = "UpdateDialog")
+
+                }, failure = { fuelError ->
+                    log(msg = "content:$fuelError", tag = "UpdateDialog")
+                })
+            }
         httpAsync.join()
     }
 
