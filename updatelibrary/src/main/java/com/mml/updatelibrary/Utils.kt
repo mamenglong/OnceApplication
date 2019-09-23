@@ -1,6 +1,13 @@
 package com.mml.updatelibrary
 
+import android.content.Context
 import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import androidx.core.content.FileProvider
+import java.io.File
+
 
 /**
  * Author: Menglong Ma
@@ -13,5 +20,31 @@ import android.util.Log
 fun Any.log(msg: String,tag:String="tag"){
     if (BuildConfig.DEBUG){
         Log.i(tag,msg)
+    }
+}
+
+object Utils {
+    /**
+     * 安装apk
+     *
+     * @param context
+     * @param file
+     */
+    @JvmStatic
+    fun installApk(context: Context, file: File) {
+       val authority=BuildConfig.LIBRARY_PACKAGE_NAME+".fileprovider"
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addCategory(Intent.CATEGORY_DEFAULT)
+        var uriData: Uri? = null
+        val type = "application/vnd.android.package-archive"
+        uriData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            FileProvider.getUriForFile(context, authority, file)
+        } else {
+            Uri.fromFile(file)
+        }
+        intent.setDataAndType(uriData, type)
+        context.startActivity(intent)
     }
 }

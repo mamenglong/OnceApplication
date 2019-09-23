@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import com.mml.onceapplication.R
+import com.mml.testlibrary.AnimationDrawableActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -51,7 +52,8 @@ class MainActivity : AppCompatActivity() {
         Pair("文字时钟",StageActivity::class.java),
         Pair("RoomTest",RoomTestActivity::class.java) ,
         Pair("更新",UpdateActivity::class.java) ,
-        Pair("RoomPageTest", PagingActivity::class.java)
+        Pair("RoomPageTest", PagingActivity::class.java),
+        Pair("图片动画", AnimationDrawableActivity::class.java)
 
     )
     private fun initView(){
