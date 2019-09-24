@@ -5,6 +5,7 @@ import android.util.Log
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import androidx.core.app.NotificationCompat
 import androidx.core.content.FileProvider
 import java.io.File
 
@@ -22,7 +23,7 @@ fun Any.log(msg: String,tag:String="tag"){
         Log.i(tag,msg)
     }
 }
-
+fun NotificationCompat.Builder.removeActions()=this.mActions.clear()
 object Utils {
     /**
      * 安装apk
