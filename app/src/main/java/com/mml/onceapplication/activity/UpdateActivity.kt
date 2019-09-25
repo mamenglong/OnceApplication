@@ -14,10 +14,11 @@ class UpdateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update)
         btn_update.setOnClickListener {
-             UpdateDialog().checkUpdate()
+            UpdateDialog().sss()
         }
         btn_update_process.setOnClickListener {
-            sendBroadcast(Intent(UpdateService.UPDATE_PROCESS_ACTION))
+            sendBroadcast(Intent(UpdateService.ACTION_UPDATE_PROCESS))
+            
         }
     }
 }

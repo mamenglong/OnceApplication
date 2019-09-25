@@ -2,66 +2,79 @@ package com.mml.updatelibrary.service
 
 import android.app.*
 import android.content.*
-import android.net.Uri
+import android.os.Build
+import android.os.Environment
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.mml.updatelibrary.R
-import com.mml.updatelibrary.Utils
-import com.mml.updatelibrary.log
-import com.mml.updatelibrary.removeActions
+import com.mml.updatelibrary.*
+import com.mml.updatelibrary.GlobalContextProvider
+import java.io.File
 
 class UpdateService : Service() {
     companion object {
 
-        const val UPDATE_START_ACTION = "com.mml.updatelibrary.service.update_start"
-        const val UPDATE_FAIL_ACTION = "com.mml.updatelibrary.service.update_fail"
-        const val UPDATE_RETRY_ACTION = "com.mml.updatelibrary.service.update_retry"
-        const val UPDATE_PROCESS_ACTION = "com.mml.updatelibrary.service.update_process"
-        const val UPDATE_CANCEL_ACTION = "com.mml.updatelibrary.service.update_cancel"
-        const val UPDATE_PAUSE_ACTION = "com.mml.updatelibrary.service.update_pause"
-        const val UPDATE_INSTALL_ACTION = "com.mml.updatelibrary.service.update_install"
+        const val ACTION_UPDATE_START = "com.mml.updatelibrary.service.action.update_start"
+        const val ACTION_UPDATE_FAIL = "com.mml.updatelibrary.service.action.update_fail"
+        const val ACTION_UPDATE_SUCCESS = "com.mml.updatelibrary.service.action.update_success"
+        const val ACTION_UPDATE_RETRY = "com.mml.updatelibrary.service.action.update_retry"
+        const val ACTION_UPDATE_PROCESS = "com.mml.updatelibrary.service.action.update_process"
+        const val ACTION_UPDATE_CANCEL = "com.mml.updatelibrary.service.action.update_cancel"
+        const val ACTION_UPDATE_PAUSE = "com.mml.updatelibrary.service.action.update_pause"
+        const val ACTION_UPDATE_INSTALL = "com.mml.updatelibrary.service.action.update_install"
         const val NotificationChannelID = "default"
         const val NOTIFICATION_ID = 1
+
+        @JvmStatic
+        fun start(context: Context) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+                context.startForegroundService(Intent(context, UpdateService::class.java))
+            } else {
+                context.startService(Intent(context, UpdateService::class.java))
+            }
+        }
     }
 
     private lateinit var notificationCompatBuilder: NotificationCompat.Builder
     private lateinit var notificationManager: NotificationManager
-    private lateinit var pauseAction:NotificationCompat.Action
-    private lateinit var cancelAction:NotificationCompat.Action
-    private lateinit var reTryAction:NotificationCompat.Action
-    private var process = 10
+    private lateinit var pauseAction: NotificationCompat.Action
+    private lateinit var cancelAction: NotificationCompat.Action
+    private lateinit var reTryAction: NotificationCompat.Action
     private val updateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
                 when (it.action) {
-                    UPDATE_START_ACTION -> {
-                        log(UPDATE_START_ACTION, tag = "UpdateService")
+                    ACTION_UPDATE_START -> {
+                        log(ACTION_UPDATE_START, tag = "UpdateService")
                         showNotification()
                     }
-                    UPDATE_PROCESS_ACTION -> {
-                        log(UPDATE_PROCESS_ACTION, tag = "UpdateService")
-                        process += 10
+                    ACTION_UPDATE_PROCESS -> {
+                        log(ACTION_UPDATE_PROCESS, tag = "UpdateService")
+                        val process = it.getIntExtra("process", -1)
+                        log("ACTION_UPDATE_PROCESS:$process", tag = "UpdateService")
                         updateNotificationProcess(process)
                     }
-                    UPDATE_CANCEL_ACTION -> {
-                        log(UPDATE_CANCEL_ACTION, tag = "UpdateService")
+                    ACTION_UPDATE_CANCEL -> {
+                        log(ACTION_UPDATE_CANCEL, tag = "UpdateService")
                         cancelNotification()
                     }
-                    UPDATE_FAIL_ACTION -> {
-                        log(UPDATE_FAIL_ACTION, tag = "UpdateService")
+                    ACTION_UPDATE_FAIL -> {
+                        log(ACTION_UPDATE_FAIL, tag = "UpdateService")
                         updateNotificationProcessContentToDownLoadFail()
                     }
-                    UPDATE_RETRY_ACTION -> {
-                        log(UPDATE_RETRY_ACTION, tag = "UpdateService")
+                    ACTION_UPDATE_SUCCESS -> {
+                        log(ACTION_UPDATE_SUCCESS, tag = "UpdateService")
+                        updateNotificationProcessContentToDownLoadSuccess()
+                    }
+                    ACTION_UPDATE_RETRY -> {
+                        log(ACTION_UPDATE_RETRY, tag = "UpdateService")
                         updateNotificationProcessContentToDownLoadRetry()
                     }
-                    UPDATE_INSTALL_ACTION -> {
-                        log(UPDATE_INSTALL_ACTION, tag = "UpdateService")
-
-//                        Utils.installApk()
+                    ACTION_UPDATE_INSTALL -> {
+                        log(ACTION_UPDATE_INSTALL, tag = "UpdateService")
+                        Utils.installApk(GlobalContextProvider.getGlobalContext(),File(Environment.getExternalStorageDirectory(), "Auto/update.apk"))
                     }
-                    UPDATE_PAUSE_ACTION -> {
-                        log(UPDATE_PAUSE_ACTION, tag = "UpdateService")
+                    ACTION_UPDATE_PAUSE -> {
+                        log(ACTION_UPDATE_PAUSE, tag = "UpdateService")
                     }
                 }
             }
@@ -79,7 +92,7 @@ class UpdateService : Service() {
         log("update service is create.", tag = "UpdateService")
         initNotification()
         registerReceiver()
-        sendBroadcast(Intent(UPDATE_START_ACTION))
+        sendBroadcast(Intent(ACTION_UPDATE_START))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -114,32 +127,33 @@ class UpdateService : Service() {
                 .setSubText("6666")
                 .setOngoing(true)    //true使notification变为ongoing，用户不能手动清除，类似QQ,false或者不设置则为普通的通知
 
-         pauseAction = NotificationCompat.Action(
+        pauseAction = NotificationCompat.Action(
             R.drawable.ic_noti_action_pause,
             applicationContext.getString(R.string.noti_action_pause),
-            getPendingIntent(UPDATE_PAUSE_ACTION)
+            getPendingIntent(ACTION_UPDATE_PAUSE)
         )
-         cancelAction = NotificationCompat.Action(
+        cancelAction = NotificationCompat.Action(
             R.drawable.ic_noti_action_cancel,
             applicationContext.getString(R.string.noti_action_cancel),
-            getPendingIntent(UPDATE_CANCEL_ACTION)
+            getPendingIntent(ACTION_UPDATE_CANCEL)
         )
-        reTryAction =NotificationCompat.Action(
+        reTryAction = NotificationCompat.Action(
             R.drawable.ic_noti_action_cancel,
             applicationContext.getString(R.string.noti_action_retry),
-            getPendingIntent(UPDATE_RETRY_ACTION)
+            getPendingIntent(ACTION_UPDATE_RETRY)
         )
     }
 
     private fun registerReceiver() {
         log("update service   registerReceiver().", tag = "UpdateService")
-        registerReceiver(updateReceiver, IntentFilter(UPDATE_START_ACTION))
-        registerReceiver(updateReceiver, IntentFilter(UPDATE_FAIL_ACTION))
-        registerReceiver(updateReceiver, IntentFilter(UPDATE_RETRY_ACTION))
-        registerReceiver(updateReceiver, IntentFilter(UPDATE_PROCESS_ACTION))
-        registerReceiver(updateReceiver, IntentFilter(UPDATE_CANCEL_ACTION))
-        registerReceiver(updateReceiver, IntentFilter(UPDATE_PAUSE_ACTION))
-        registerReceiver(updateReceiver, IntentFilter(UPDATE_INSTALL_ACTION))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_START))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_FAIL))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_SUCCESS))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_RETRY))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_PROCESS))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_CANCEL))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_PAUSE))
+        registerReceiver(updateReceiver, IntentFilter(ACTION_UPDATE_INSTALL))
 
     }
 
@@ -154,7 +168,7 @@ class UpdateService : Service() {
 
         notificationCompatBuilder.addAction(pauseAction)
         notificationCompatBuilder.addAction(cancelAction)
-        val pIntent = getPendingIntent(UPDATE_INSTALL_ACTION)
+        val pIntent = getPendingIntent(ACTION_UPDATE_INSTALL)
         notificationCompatBuilder.setContentIntent(pIntent)
 
 
@@ -176,20 +190,24 @@ class UpdateService : Service() {
         if (process < 100) {
             updateNotificationProcessContent(process)
         } else if (process >= 100) {
-            updateNotificationProcessContentToDownLoadFinish()
+            updateNotificationProcessContentToDownLoadSuccess()
         }
-        notifyNotification()
     }
 
-    private fun updateNotificationProcessContentToDownLoadFinish() {
+    private fun updateNotificationProcessContentToDownLoadSuccess() {
+        log(
+            "update service   updateNotificationProcessContentToDownLoadSuccess().",
+            tag = "UpdateService"
+        )
         notificationCompatBuilder.apply {
             removeActions()
             setProgress(0, 0, false)
             setContentTitle(applicationContext.getString(R.string.update_finish_title))
             setContentText(applicationContext.getString(R.string.update_finish))
-            val pIntent = getPendingIntent(UPDATE_INSTALL_ACTION)
+            val pIntent = getPendingIntent(ACTION_UPDATE_INSTALL)
             setContentIntent(pIntent)
         }
+        notifyNotification()
     }
 
     private fun updateNotificationProcessContentToDownLoadFail() {
@@ -197,18 +215,19 @@ class UpdateService : Service() {
             setProgress(0, 0, false)
             setContentTitle(applicationContext.getString(R.string.update_fail_title))
             setContentText(applicationContext.getString(R.string.update_fail))
-            val pIntent = getPendingIntent(UPDATE_RETRY_ACTION)
+            val pIntent = getPendingIntent(ACTION_UPDATE_RETRY)
             setContentIntent(pIntent)
         }
+        notifyNotification()
     }
 
     private fun updateNotificationProcessContentToDownLoadRetry() {
         notificationCompatBuilder.removeActions()
         updateNotificationProcessContent(0)
-        notifyNotification()
     }
 
     private fun updateNotificationProcessContent(process: Int) {
+        log("update service   updateNotificationProcessContent().", tag = "UpdateService")
         notificationCompatBuilder.apply {
             removeActions()
             addAction(reTryAction)
@@ -220,16 +239,12 @@ class UpdateService : Service() {
                     "${process}%"
                 )
             )
-     /*       val stackBuilder = TaskStackBuilder.create(this@UpdateService)
-            stackBuilder.addNextIntent(Intent())
-
-            val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-
-            setContentIntent(pendingIntent)*/
         }
+        notifyNotification()
     }
 
     private fun notifyNotification() {
+        log("update service   notifyNotification().", tag = "UpdateService")
         notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build())
     }
 }

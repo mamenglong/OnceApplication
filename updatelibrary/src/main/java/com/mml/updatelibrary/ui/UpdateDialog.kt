@@ -1,25 +1,19 @@
 package com.mml.updatelibrary.ui
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.TaskStackBuilder
+import android.os.Environment
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.gson.responseObject
 
 import com.github.kittinunf.fuel.httpGet
 import com.mml.updatelibrary.GlobalContextProvider
-import com.mml.updatelibrary.R
 import com.mml.updatelibrary.data.UpdateInfo
 import com.mml.updatelibrary.data.UpdateUrl
 import com.mml.updatelibrary.log
 import com.mml.updatelibrary.service.UpdateService
-import com.mml.updatelibrary.service.UpdateService.Companion.UPDATE_START_ACTION
+import com.mml.updatelibrary.service.UpdateService.Companion.ACTION_UPDATE_FAIL
+import com.mml.updatelibrary.service.UpdateService.Companion.ACTION_UPDATE_PROCESS
+import com.mml.updatelibrary.service.UpdateService.Companion.ACTION_UPDATE_SUCCESS
 import java.io.File
 import java.nio.charset.Charset
 
@@ -49,11 +43,7 @@ class UpdateDialog {
                     log(msg = "content:$updateInfo", tag = "UpdateDialog")
 
                   GlobalContextProvider.getGlobalContext().apply {
-                      if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-                          startForegroundService(Intent(this, UpdateService::class.java))
-                      } else {
-                          startService(Intent(this, UpdateService::class.java))
-                      }
+                      UpdateService.start(this)
                     //  notification(this)
                   }
 
@@ -65,57 +55,37 @@ class UpdateDialog {
     }
 
     fun sss() {
-        val http = Fuel.download("http://elf.static.maibaapp.com/butterfly/pure/vc_examine.json")
-            /*   .streamDestination { response, request ->
-                   val file=File("config.json")
-                  Pair(FileOutputStream(file),{FileInputStream(file)})
-
-               }*/
+        val file = File(Environment.getExternalStorageDirectory(), "Auto/update.apk")
+        if (!file.exists())
+            file.createNewFile()
+        GlobalContextProvider.getGlobalContext().apply {
+            UpdateService.start(this)
+        }
+        val http = Fuel
+            .download("https://ali-fir-pro-binary.fir.im/b725376798430078f69d0558131662c09b1f6a38.apk?auth_key=1569383235-0-0-e7c886fe18f51a517958451bdbb04f2c")
             .fileDestination { response, url ->
-                File.createTempFile("temp", ".json")
+                file
+            }
+            .progress { readBytes, totalBytes ->
+                val process=readBytes.toFloat() / totalBytes.toFloat()
+                GlobalContextProvider.getGlobalContext().sendBroadcast(Intent(ACTION_UPDATE_PROCESS).apply {
+                    log(msg = "readBytes:$readBytes  totalBytes:$totalBytes  process:${(process*100).toInt()}", tag = "UpdateDialog")
+                    putExtra("process",(process*100).toInt())
+                })
             }
             .response { result ->
-                val aa = result.component1()!!.toString(Charset.defaultCharset())
-                log(msg = "content:$aa", tag = "UpdateDialog")
-            }
-    }
-
-    fun notification(context: Context) {
-        val intent = Intent(UPDATE_START_ACTION)
-        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        //8.0   channelId
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "default"
-            val channelName = "通知"
-            manager.createNotificationChannel(
-                NotificationChannel(
-                    channelId,
-                    channelName,
-                    NotificationManager.IMPORTANCE_HIGH
+                result.fold(
+                    success = {
+                        val aa = result.component1()!!.toString(Charset.defaultCharset())
+                        log(msg = "content:$aa", tag = "UpdateDialog")
+                        GlobalContextProvider.getGlobalContext().sendBroadcast(Intent(ACTION_UPDATE_SUCCESS))
+                    },
+                    failure = {
+                        GlobalContextProvider.getGlobalContext().sendBroadcast(Intent(ACTION_UPDATE_FAIL))
+                    }
                 )
-            )
-        }
 
-        //TaskStackBuilder
-/*
-        val stackBuilder = TaskStackBuilder.create(context)
-        stackBuilder.addParentStack(null)
-        stackBuilder.addNextIntent(intent)
+            }
 
-        val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-*/
-
-        val notification = NotificationCompat.Builder(context, "default")
-            .setSmallIcon(R.drawable.ic_update_logo)
-            .setContentTitle("这是个通知")
-            .setContentText("通知")
-            .setAutoCancel(true)
-            .setDefaults(Notification.DEFAULT_ALL)
-            .setWhen(System.currentTimeMillis())
-        //    .setContentIntent(pendingIntent)
-            .build()
-
-        manager.notify(14, notification)
     }
-
 }
