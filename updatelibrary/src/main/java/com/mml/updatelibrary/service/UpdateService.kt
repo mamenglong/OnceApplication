@@ -198,6 +198,7 @@ class UpdateService : Service() {
 
     fun cancelNotification() {
         notificationManager.cancel(NOTIFICATION_ID)
+        stopForeground(true)
     }
 
     private fun updateNotificationProcess(process: Int) {
