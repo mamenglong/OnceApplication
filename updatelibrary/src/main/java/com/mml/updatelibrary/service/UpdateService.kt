@@ -2,6 +2,7 @@ package com.mml.updatelibrary.service
 
 import android.app.*
 import android.content.*
+import android.graphics.Color
 import android.os.Build
 import android.os.Environment
 import android.os.IBinder
@@ -71,7 +72,10 @@ class UpdateService : Service() {
                     }
                     ACTION_UPDATE_INSTALL -> {
                         log(ACTION_UPDATE_INSTALL, tag = "UpdateService")
-                        Utils.installApk(GlobalContextProvider.getGlobalContext(),File(Environment.getExternalStorageDirectory(), "Auto/update.apk"))
+                        Utils.installApk(
+                            GlobalContextProvider.getGlobalContext(),
+                            File(Environment.getExternalStorageDirectory(), "Auto/update.apk")
+                        )
                     }
                     ACTION_UPDATE_PAUSE -> {
                         log(ACTION_UPDATE_PAUSE, tag = "UpdateService")
@@ -171,7 +175,18 @@ class UpdateService : Service() {
         val pIntent = getPendingIntent(ACTION_UPDATE_INSTALL)
         notificationCompatBuilder.setContentIntent(pIntent)
 
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val chan1 = NotificationChannel(
+                NotificationChannelID,
+                getString(R.string.noti_channel_default),
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            chan1.enableLights(true)
+            chan1.lightColor = Color.GREEN
+            chan1.setShowBadge(true)
+            chan1.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            notificationManager.createNotificationChannel(chan1)
+        }
         startForeground(NOTIFICATION_ID, notificationCompatBuilder.build())
 
     }
@@ -222,7 +237,14 @@ class UpdateService : Service() {
     }
 
     private fun updateNotificationProcessContentToDownLoadRetry() {
-        notificationCompatBuilder.removeActions()
+        notificationCompatBuilder.apply {
+            removeActions()
+            setContentTitle(
+                applicationContext.getString(
+                    R.string.is_updating
+                )
+            )
+        }
         updateNotificationProcessContent(0)
     }
 

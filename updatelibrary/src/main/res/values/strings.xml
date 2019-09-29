@@ -11,4 +11,5 @@
     <string name="update_fail_title">下载失败</string>
     <string name="update_fail">下载失败,点击重试</string>
     <string name="noti_action_retry">重试</string>
+    <string name="noti_channel_default">default</string>
 </resources>
