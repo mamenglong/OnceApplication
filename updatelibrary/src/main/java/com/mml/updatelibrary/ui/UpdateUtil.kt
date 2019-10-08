@@ -40,7 +40,7 @@ object UpdateUtil {
                     log(msg = "content:$updateInfo", tag = "UpdateUtil")
                     this.updateInfo=updateInfo
                     //设置每次显示，设置本次显示及强制更新 每次都显示弹窗
-                 //   if (updateInfo.config.serverVersionCode > BuildConfig.VERSION_CODE)
+                    if (updateInfo.config.serverVersionCode > BuildConfig.VERSION_CODE)
                         shouldShowUpdateDialog()
                 }, failure = { fuelError ->
                     log(msg = "content:$fuelError", tag = "UpdateUtil")
