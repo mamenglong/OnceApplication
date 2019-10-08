@@ -21,5 +21,5 @@ data class UpdateConfig(
     var showDownloadingToast: Boolean = true, // 是否需要显示 【更新下载中】文案
 
     var serverVersionName: String = "", // 服务器上版本名
-    var serverVersionCode: Int = 0 // 服务器上版本号
+    var serverVersionCode: Int = 20// 服务器上版本号
 )

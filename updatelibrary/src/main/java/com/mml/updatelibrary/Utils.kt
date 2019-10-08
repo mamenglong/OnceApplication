@@ -1,13 +1,16 @@
 package com.mml.updatelibrary
 
+import android.app.ActivityManager
 import android.content.Context
 import android.util.Log
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import java.io.File
+import kotlin.system.exitProcess
 
 
 /**
@@ -47,5 +50,18 @@ object Utils {
         }
         intent.setDataAndType(uriData, type)
         context.startActivity(intent)
+    }
+    /**
+     * 退出app
+     */
+    fun exitApp() {
+        val manager = GlobalContextProvider.getGlobalContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            manager.appTasks.forEach {
+                it.finishAndRemoveTask()
+            }
+        } else {
+            exitProcess(0)
+        }
     }
 }

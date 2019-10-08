@@ -8,11 +8,11 @@ import org.junit.Assert.*
  * Author: Menglong Ma
  * Email: mml2015@126.com
  * Date: 19-9-18 下午5:16
- * Description: This is UpdateDialogTest
+ * Description: This is UpdateUtilsTest
  * Package: com.mml.updatelibrary.ui
  * Project: OnceApplication
  */
-class UpdateDialogTest {
+class UpdateUtilsTest {
 
     @Test
     fun checkUpdate() {

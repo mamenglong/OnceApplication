@@ -1,7 +1,7 @@
 package com.mml.updatelibrary
 
 import com.mml.updatelibrary.data.UpdateInfo
-import com.mml.updatelibrary.ui.UpdateDialog
+import com.mml.updatelibrary.ui.UpdateUtil
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -23,6 +23,6 @@ class ExampleUnitTest {
     }
     @Test
     fun tets(){
-        UpdateDialog().checkUpdate()
+        UpdateUtil.checkUpdate()
     }
 }

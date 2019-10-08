@@ -7,9 +7,11 @@ import android.os.Build
 import android.os.Environment
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import com.github.kittinunf.fuel.Fuel
 import com.mml.updatelibrary.*
 import com.mml.updatelibrary.GlobalContextProvider
 import java.io.File
+import java.nio.charset.Charset
 
 class UpdateService : Service() {
     companion object {
@@ -47,6 +49,7 @@ class UpdateService : Service() {
                     ACTION_UPDATE_START -> {
                         log(ACTION_UPDATE_START, tag = "UpdateService")
                         showNotification()
+                        getUpdateFile()
                     }
                     ACTION_UPDATE_PROCESS -> {
                         log(ACTION_UPDATE_PROCESS, tag = "UpdateService")
@@ -86,6 +89,7 @@ class UpdateService : Service() {
 
     }
 
+    private val fileName="ATemp/update.apk"
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -99,6 +103,42 @@ class UpdateService : Service() {
         sendBroadcast(Intent(ACTION_UPDATE_START))
     }
 
+    fun getUpdateFile(){
+        val file = File(Environment.getExternalStorageDirectory(), fileName)
+        if (!file.exists())
+            file.createNewFile()
+        val http = Fuel
+            .download("https://ali-fir-pro-binary.fir.im/b725376798430078f69d0558131662c09b1f6a38.apk?auth_key=1569383235-0-0-e7c886fe18f51a517958451bdbb04f2c")
+            .fileDestination { response, url ->
+                file
+            }
+            .progress { readBytes, totalBytes ->
+                val process = readBytes.toFloat() / totalBytes.toFloat()
+                GlobalContextProvider.getGlobalContext()
+                    .sendBroadcast(Intent(ACTION_UPDATE_PROCESS).apply {
+                        log(
+                            msg = "readBytes:$readBytes  totalBytes:$totalBytes  process:${(process * 100).toInt()}",
+                            tag = "UpdateUtil"
+                        )
+                        putExtra("process", (process * 100).toInt())
+                    })
+            }
+            .response { result ->
+                result.fold(
+                    success = {
+                        val aa = result.component1()!!.toString(Charset.defaultCharset())
+                        log(msg = "content:$aa", tag = "UpdateUtil")
+                        GlobalContextProvider.getGlobalContext()
+                            .sendBroadcast(Intent(ACTION_UPDATE_SUCCESS))
+                    },
+                    failure = {
+                        GlobalContextProvider.getGlobalContext()
+                            .sendBroadcast(Intent(ACTION_UPDATE_FAIL))
+                    }
+                )
+
+            }
+    }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("update service   onStartCommand.", tag = "UpdateService")
         return START_STICKY_COMPATIBILITY// super.onStartCommand(intent, flags, startId)
