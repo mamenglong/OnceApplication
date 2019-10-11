@@ -8,6 +8,7 @@ import com.github.kittinunf.fuel.gson.responseObject
 import com.github.kittinunf.fuel.httpGet
 import com.mml.updatelibrary.BuildConfig
 import com.mml.updatelibrary.GlobalContextProvider
+import com.mml.updatelibrary.data.SP
 import com.mml.updatelibrary.data.UpdateInfo
 import com.mml.updatelibrary.data.UpdateUrl
 import com.mml.updatelibrary.log
@@ -31,14 +32,15 @@ object UpdateUtil {
     init {
         GlobalContextProvider.getGlobalContext()
     }
-    var  updateInfo:UpdateInfo =UpdateInfo()
+
+    var updateInfo: UpdateInfo = UpdateInfo()
     fun checkUpdate() {
         val httpAsync = UpdateUrl().url.httpGet()
             .responseObject<UpdateInfo> { response, _, result ->
                 log(msg = "content:${response.body}", tag = "UpdateUtil")
                 result.fold(success = { updateInfo ->
                     log(msg = "content:$updateInfo", tag = "UpdateUtil")
-                    this.updateInfo=updateInfo
+                    this.updateInfo = updateInfo
                     //设置每次显示，设置本次显示及强制更新 每次都显示弹窗
                     if (updateInfo.config.serverVersionCode > BuildConfig.VERSION_CODE)
                         shouldShowUpdateDialog()
@@ -50,7 +52,9 @@ object UpdateUtil {
     }
 
     private fun shouldShowUpdateDialog() {
-        UpdateActivity.start()
+        //检查是否忽略了
+        if (SP.ignoreVersion < updateInfo.config.serverVersionCode)
+            UpdateActivity.start()
     }
 
     fun sss() {
@@ -92,5 +96,10 @@ object UpdateUtil {
 
             }
 
+    }
+
+    fun cancelNoLongerRemind() {
+        SP.ignoreVersion=0
+        checkUpdate()
     }
 }

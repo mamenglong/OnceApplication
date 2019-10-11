@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import com.mml.easyconfig.AndroidConfig
 
 /**
  * desc: 通过ContentProvider提供context.
@@ -26,6 +27,7 @@ internal class GlobalContextProvider : ContentProvider() {
 
     override fun onCreate(): Boolean {
         instance.mContext = context!!.applicationContext
+        AndroidConfig.initialize(this.context!!)
         return true
     }
 

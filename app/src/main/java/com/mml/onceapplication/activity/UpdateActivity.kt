@@ -7,6 +7,7 @@ import com.mml.onceapplication.R
 import com.mml.updatelibrary.service.UpdateService
 import com.mml.updatelibrary.ui.UpdateUtil
 import kotlinx.android.synthetic.main.activity_update1.*
+import kotlinx.android.synthetic.main.bottom_sheet_dialog.*
 
 class UpdateActivity1 : AppCompatActivity() {
 
@@ -19,6 +20,9 @@ class UpdateActivity1 : AppCompatActivity() {
         btn_update_process.setOnClickListener {
             sendBroadcast(Intent(UpdateService.ACTION_UPDATE_PROCESS))
             
+        }
+        btn_update_Cancel_no_notice.setOnClickListener {
+            UpdateUtil.cancelNoLongerRemind()
         }
     }
 }

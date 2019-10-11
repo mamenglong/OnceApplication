@@ -5,10 +5,13 @@ import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Display
+import android.view.View
 import android.view.WindowManager
+import com.mml.easyconfig.AndroidConfig
 import com.mml.updatelibrary.GlobalContextProvider
 import com.mml.updatelibrary.R
 import com.mml.updatelibrary.Utils
+import com.mml.updatelibrary.data.SP
 import com.mml.updatelibrary.data.UpdateInfo
 import com.mml.updatelibrary.log
 import com.mml.updatelibrary.service.UpdateService
@@ -36,6 +39,20 @@ class UpdateActivity : AppCompatActivity() {
         updateInfo = UpdateUtil.updateInfo
         log(msg = "content:$updateInfo", tag = "UpdateActivity")
         initView()
+        initConfig()
+    }
+
+    private fun initConfig() {
+          if (updateInfo.config.force){
+              btn_update_cancel.visibility= View.GONE
+          }else{
+              if (SP.ignoreVersion < updateInfo.config.serverVersionCode){
+                  btn_update_cancel.visibility= View.VISIBLE
+              }else{
+                  btn_update_cancel.visibility= View.GONE
+                  finish()
+              }
+          }
     }
 
     private fun initUi() {
@@ -57,11 +74,8 @@ class UpdateActivity : AppCompatActivity() {
             UpdateService.start(this)
         }
         btn_update_cancel.setOnClickListener {
-            if (updateInfo.config.force) {
-                Utils.exitApp()
-            } else {
-                finish()
-            }
+            SP.ignoreVersion=updateInfo.config.serverVersionCode
+            finish()
         }
     }
 
