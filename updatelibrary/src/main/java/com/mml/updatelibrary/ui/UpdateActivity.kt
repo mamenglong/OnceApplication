@@ -41,7 +41,7 @@ class UpdateActivity : AppCompatActivity() {
     private fun initUi() {
         val d = windowManager.defaultDisplay // 为获取屏幕宽、高
         val p = window.attributes
-        val point=Point()
+        val point = Point()
         d.getSize(point)
         p.height = ((point.y * 0.4).toInt()) // 高度设置为屏幕的0.3
         p.width = ((point.x * 0.7).toInt()) // 宽度设置为屏幕的0.7
@@ -49,8 +49,10 @@ class UpdateActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        tv_update_title.text = updateInfo.updateTitle
-        tv_update_content.text = updateInfo.updateContent
+        if (updateInfo.updateTitle.isNotEmpty())
+            tv_update_title.text = updateInfo.updateTitle
+        if (updateInfo.updateContent.isNotEmpty())
+            tv_update_content.text = updateInfo.updateContent
         btn_update_sure.setOnClickListener {
             UpdateService.start(this)
         }
@@ -64,6 +66,10 @@ class UpdateActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
+        if (updateInfo.config.force) {
+            Utils.exitApp()
+        } else {
+          super.onBackPressed()
+        }
     }
 }
