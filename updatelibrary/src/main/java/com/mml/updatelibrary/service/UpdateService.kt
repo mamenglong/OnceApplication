@@ -24,7 +24,7 @@ class UpdateService : Service() {
         const val ACTION_UPDATE_CANCEL = "com.mml.updatelibrary.service.action.update_cancel"
         const val ACTION_UPDATE_PAUSE = "com.mml.updatelibrary.service.action.update_pause"
         const val ACTION_UPDATE_INSTALL = "com.mml.updatelibrary.service.action.update_install"
-        const val NotificationChannelID = "default"
+        const val NotificationChannelID = "appUpdate"
         const val NOTIFICATION_ID = 1
 
         @JvmStatic
@@ -72,6 +72,7 @@ class UpdateService : Service() {
                     ACTION_UPDATE_RETRY -> {
                         log(ACTION_UPDATE_RETRY, tag = "UpdateService")
                         updateNotificationProcessContentToDownLoadRetry()
+                        getUpdateFile()
                     }
                     ACTION_UPDATE_INSTALL -> {
                         log(ACTION_UPDATE_INSTALL, tag = "UpdateService")
@@ -101,6 +102,7 @@ class UpdateService : Service() {
         initNotification()
         registerReceiver()
         sendBroadcast(Intent(ACTION_UPDATE_START))
+        
     }
 
     fun getUpdateFile(){
@@ -108,7 +110,7 @@ class UpdateService : Service() {
         if (!file.exists())
             file.createNewFile()
         val http = Fuel
-            .download("https://ali-fir-pro-binary.fir.im/b725376798430078f69d0558131662c09b1f6a38.apk?auth_key=1569383235-0-0-e7c886fe18f51a517958451bdbb04f2c")
+            .download("http://dl-ks.coolapkmarket.com/down/apk_upload/2019/1013/2be56956130b91169fd245364df18fe0-245443-o_1dn25652i1p72159lp73n0c1tscq-uid-1463983.apk?t=1571023424&k=c386eaa7a96d885cc44c97757e67438c")
             .fileDestination { response, url ->
                 file
             }
@@ -118,7 +120,7 @@ class UpdateService : Service() {
                     .sendBroadcast(Intent(ACTION_UPDATE_PROCESS).apply {
                         log(
                             msg = "readBytes:$readBytes  totalBytes:$totalBytes  process:${(process * 100).toInt()}",
-                            tag = "UpdateUtil"
+                            tag = "UpdateService"
                         )
                         putExtra("process", (process * 100).toInt())
                     })
@@ -127,7 +129,7 @@ class UpdateService : Service() {
                 result.fold(
                     success = {
                         val aa = result.component1()!!.toString(Charset.defaultCharset())
-                        log(msg = "content:$aa", tag = "UpdateUtil")
+                        log(msg = "content:$aa", tag = "UpdateService")
                         GlobalContextProvider.getGlobalContext()
                             .sendBroadcast(Intent(ACTION_UPDATE_SUCCESS))
                     },
@@ -168,7 +170,7 @@ class UpdateService : Service() {
                 .setDefaults(Notification.DEFAULT_LIGHTS) //设置通知的提醒方式： 呼吸灯
                 .setPriority(NotificationCompat.PRIORITY_MAX) //设置通知的优先级：最大
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-                .setSubText("6666")
+                .setSubText("更新下载中")
                 .setOngoing(true)    //true使notification变为ongoing，用户不能手动清除，类似QQ,false或者不设置则为普通的通知
 
         pauseAction = NotificationCompat.Action(

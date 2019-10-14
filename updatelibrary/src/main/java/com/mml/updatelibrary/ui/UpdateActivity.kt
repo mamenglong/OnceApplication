@@ -1,13 +1,15 @@
 package com.mml.updatelibrary.ui
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Point
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Display
 import android.view.View
-import android.view.WindowManager
-import com.mml.easyconfig.AndroidConfig
+import androidx.appcompat.app.AppCompatActivity
+import com.mml.easyconfig.extSetVisibility
 import com.mml.updatelibrary.GlobalContextProvider
 import com.mml.updatelibrary.R
 import com.mml.updatelibrary.Utils
@@ -19,8 +21,25 @@ import kotlinx.android.synthetic.main.activity_update.*
 
 class UpdateActivity : AppCompatActivity() {
 
-    lateinit var updateInfo: UpdateInfo
+    private lateinit var updateInfo: UpdateInfo
 
+    private val receiver= object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                when (it.action) {
+                    UpdateService.ACTION_UPDATE_PROCESS,UpdateService.ACTION_UPDATE_START -> {
+                        log(UpdateService.ACTION_UPDATE_PROCESS, tag = "UpdateService")
+                        val process = it.getIntExtra("process", 0)
+                        log("ACTION_UPDATE_PROCESS:$process", tag = "UpdateService")
+                        btn_group.extSetVisibility(false)
+                        progress_group.extSetVisibility(true)
+                        tv_progress_text.text=getString(R.string.tv_progress_text,"$process%")
+                    }
+                }
+            }
+        }
+
+    }
     companion object {
         fun start() {
             log(msg = "content:start", tag = "UpdateActivity")
@@ -40,8 +59,25 @@ class UpdateActivity : AppCompatActivity() {
         log(msg = "content:$updateInfo", tag = "UpdateActivity")
         initView()
         initConfig()
+        registerReceiver()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(receiver)
+    }
+    private fun registerReceiver() {
+        log("update service   registerReceiver().", tag = "UpdateActivity")
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_START))
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_FAIL))
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_SUCCESS))
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_RETRY))
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_PROCESS))
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_CANCEL))
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_PAUSE))
+        registerReceiver(receiver, IntentFilter(UpdateService.ACTION_UPDATE_INSTALL))
+
+    }
     private fun initConfig() {
           if (updateInfo.config.force){
               btn_update_cancel.visibility= View.GONE
