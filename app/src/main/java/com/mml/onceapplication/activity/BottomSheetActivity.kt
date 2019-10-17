@@ -3,12 +3,17 @@ package com.mml.onceapplication.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mml.onceapplication.R
 import com.mml.onceapplication.dialog.*
 import com.mml.onceapplication.showToast
 import kotlinx.android.synthetic.main.activity_bottom_sheet.*
+import androidx.annotation.NonNull
+import com.baidu.speech.utils.Policy.app
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 
 
 class BottomSheetActivity : AppCompatActivity() {
@@ -16,7 +21,7 @@ class BottomSheetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bottom_sheet)
+        setContentView(com.mml.onceapplication.R.layout.activity_bottom_sheet)
         initView()
     }
 
@@ -40,12 +45,25 @@ class BottomSheetActivity : AppCompatActivity() {
         }
         show_bottom_sheet_dialog.setOnClickListener { view->
             val dialog = BottomSheetDialog(this)
-            val view = layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
+            val view = layoutInflater.inflate(com.mml.onceapplication.R.layout.bottom_sheet_dialog1, null)
             dialog.setContentView(view)
-//            var contenView=view.findViewById(R.id.dialog_bottom_sheet) as  NestedScrollView
-//            var behavior = BottomSheetBehavior.from(contenView)
+//            dialog.getWindow().findViewById(R.id.design_bottom_sheet)
+//                .setBackgroundResource(android.R.color.transparent)
+//            var contentView=dialog.requireViewById<Fragment>(R.id.design_bottom_sheet)//view.findViewById(com.mml.onceapplication.R.id.dialog_bottom_sheet) as NestedScrollView
+//            var behavior = BottomSheetBehavior.from(contentView)
+//            behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+//                override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                    //这里是bottomSheet 状态的改变
+//                }
+//
+//                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                    //这里是拖拽中的回调，根据slideOffset可以做一些动画
+//                }
+//            })
+//            behavior.peekHeight=40
 //            behavior.isHideable = false //此处设置表示禁止BottomSheetBehavior的执行
             dialog.show()
+          //  behavior.setState(BottomSheetBehavior.STATE_EXPANDED)
         }
         easy_dialog.setOnClickListener {
 /*            val dialog= CustomDialog()
@@ -56,7 +74,7 @@ class BottomSheetActivity : AppCompatActivity() {
 
 
             val sss=EasyDialog.init<CustomDialog>(EasyDialog.DialogType.CUSTOM)
-                .setLayoutRes(R.layout.dialog_easy_sample)
+                .setLayoutRes(com.mml.onceapplication.R.layout.dialog_easy_sample)
                 .setOnDismissCallback {  showToast("onDismissCallback") }
                 .convert { it-> }
                 .show(fragmentManager = supportFragmentManager)
