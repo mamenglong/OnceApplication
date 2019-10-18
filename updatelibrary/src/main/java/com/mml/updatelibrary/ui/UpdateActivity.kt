@@ -55,6 +55,7 @@ class UpdateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update)
         initUi()
+        filesDir
         updateInfo = UpdateUtil.updateInfo
         log(msg = "content:$updateInfo", tag = "UpdateActivity")
         initView()

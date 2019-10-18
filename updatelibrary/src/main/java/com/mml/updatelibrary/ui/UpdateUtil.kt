@@ -58,7 +58,7 @@ object UpdateUtil {
     }
 
     fun sss() {
-        val file = File(Environment.getExternalStorageDirectory(), "Auto/update.apk")
+        val file = File(Environment.getDownloadCacheDirectory(), "Auto/update.apk")
         if (!file.exists())
             file.createNewFile()
         GlobalContextProvider.getGlobalContext().apply {

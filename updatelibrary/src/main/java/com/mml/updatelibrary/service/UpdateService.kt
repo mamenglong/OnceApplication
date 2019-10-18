@@ -8,6 +8,7 @@ import android.os.Environment
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.requests.CancellableRequest
 import com.mml.updatelibrary.*
 import com.mml.updatelibrary.GlobalContextProvider
 import java.io.File
@@ -36,7 +37,8 @@ class UpdateService : Service() {
             }
         }
     }
-
+    private val fileName="update.apk"
+    private var http:CancellableRequest?=null
     private lateinit var notificationCompatBuilder: NotificationCompat.Builder
     private lateinit var notificationManager: NotificationManager
     private lateinit var pauseAction: NotificationCompat.Action
@@ -60,10 +62,12 @@ class UpdateService : Service() {
                     ACTION_UPDATE_CANCEL -> {
                         log(ACTION_UPDATE_CANCEL, tag = "UpdateService")
                         cancelNotification()
+                        http?.cancel()
                     }
                     ACTION_UPDATE_FAIL -> {
                         log(ACTION_UPDATE_FAIL, tag = "UpdateService")
                         updateNotificationProcessContentToDownLoadFail()
+                        http?.cancel()
                     }
                     ACTION_UPDATE_SUCCESS -> {
                         log(ACTION_UPDATE_SUCCESS, tag = "UpdateService")
@@ -78,19 +82,19 @@ class UpdateService : Service() {
                         log(ACTION_UPDATE_INSTALL, tag = "UpdateService")
                         Utils.installApk(
                             GlobalContextProvider.getGlobalContext(),
-                            File(Environment.getExternalStorageDirectory(), "Auto/update.apk")
+                            File(getDir("update", Context.MODE_PRIVATE), "update.apk")
                         )
                     }
                     ACTION_UPDATE_PAUSE -> {
                         log(ACTION_UPDATE_PAUSE, tag = "UpdateService")
                     }
+                    else->{}
                 }
             }
         }
 
     }
 
-    private val fileName="ATemp/update.apk"
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -106,13 +110,25 @@ class UpdateService : Service() {
     }
 
     fun getUpdateFile(){
-        val file = File(Environment.getExternalStorageDirectory(), fileName)
-        if (!file.exists())
-            file.createNewFile()
-        val http = Fuel
+        ///data/data/包名/files
+        filesDir
+        cacheDir
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dataDir
+        }
+        obbDir
+        externalCacheDir
+        val file = getDir("update", Context.MODE_PRIVATE)
+        if (!file.exists()){
+            file.mkdirs()
+        }
+        val update=File(file,fileName)
+        if (!update.exists())
+            update.createNewFile()
+         http = Fuel
             .download("http://dl-ks.coolapkmarket.com/down/apk_upload/2019/1013/2be56956130b91169fd245364df18fe0-245443-o_1dn25652i1p72159lp73n0c1tscq-uid-1463983.apk?t=1571023424&k=c386eaa7a96d885cc44c97757e67438c")
             .fileDestination { response, url ->
-                file
+                update
             }
             .progress { readBytes, totalBytes ->
                 val process = readBytes.toFloat() / totalBytes.toFloat()
@@ -134,12 +150,14 @@ class UpdateService : Service() {
                             .sendBroadcast(Intent(ACTION_UPDATE_SUCCESS))
                     },
                     failure = {
+                        log(msg = "content:${it.cause}", tag = "UpdateService")
                         GlobalContextProvider.getGlobalContext()
                             .sendBroadcast(Intent(ACTION_UPDATE_FAIL))
                     }
                 )
 
             }
+        http?.join()
     }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("update service   onStartCommand.", tag = "UpdateService")

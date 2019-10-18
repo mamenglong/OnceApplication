@@ -51,6 +51,26 @@ object Utils {
         intent.setDataAndType(uriData, type)
         context.startActivity(intent)
     }
+
+    /**
+     * 安装apk
+     *
+     * @param context
+     * @param uri
+     */
+    @JvmStatic
+    fun installApk(context: Context, uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.addCategory(Intent.CATEGORY_DEFAULT)
+        val type = "application/vnd.android.package-archive"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        } else {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        intent.setDataAndType(uri, type)
+        context.startActivity(intent)
+    }
     /**
      * 退出app
      */
