@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity() {
         Pair("RoomTest",RoomTestActivity::class.java) ,
         Pair("更新",UpdateActivity1::class.java) ,
         Pair("RoomPageTest", PagingActivity::class.java),
-        Pair("图片动画", AnimationDrawableActivity::class.java)
+        Pair("图片动画", AnimationDrawableActivity::class.java) ,
+        Pair("协程", CoroutinesActivity::class.java)
 
     )
     private fun initView(){
