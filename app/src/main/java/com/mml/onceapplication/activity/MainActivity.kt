@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import com.mml.onceapplication.R
+import com.mml.onceapplication.activity.hero.HeroListActivity
 import com.mml.testlibrary.AnimationDrawableActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -55,7 +56,8 @@ class MainActivity : AppCompatActivity() {
         Pair("RoomPageTest", PagingActivity::class.java),
         Pair("图片动画", AnimationDrawableActivity::class.java) ,
         Pair("协程", CoroutinesActivity::class.java),
-        Pair("EasyMock", EasyMockActivity::class.java)
+        Pair("EasyMock", EasyMockActivity::class.java),
+        Pair("王者荣耀", HeroListActivity::class.java)
 
     )
     private fun initView(){
