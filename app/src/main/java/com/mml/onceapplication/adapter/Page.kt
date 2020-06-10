@@ -10,6 +10,7 @@ import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.mml.onceapplication.R
 import com.mml.onceapplication.db.TestDatabase
 import com.mml.onceapplication.db.User
@@ -79,3 +80,20 @@ class PageViewModel(app:Application):AndroidViewModel(app){
     }
 }
 
+abstract class BaseRVAdapter<T,R:ViewBinding>(): RecyclerView.Adapter<BaseRVAdapter<T,R>.ViewHolder<R>>() {
+    val dataList = mutableListOf<T>()
+    abstract fun getViewHolder(parent: ViewGroup, viewType: Int):R
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRVAdapter<T,R>.ViewHolder<R> {
+        return ViewHolder(getViewHolder(parent,viewType))
+    }
+
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+
+    override fun onBindViewHolder(holder: BaseRVAdapter<T,R>.ViewHolder<R>, position: Int) {
+
+    }
+
+    inner class ViewHolder<S:ViewBinding>(viewBinding: S):RecyclerView.ViewHolder(viewBinding.root)
+}

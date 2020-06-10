@@ -25,7 +25,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.hero.HeroListActivity"></activity>
+        <activity android:name=".activity.ViewBindActivity"></activity>
+        <activity android:name=".activity.hero.HeroListActivity" />
         <activity android:name=".activity.EasyMockActivity" />
         <activity android:name=".activity.CoroutinesActivity" />
         <activity android:name=".activity.UpdateActivity1" />

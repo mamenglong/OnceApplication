@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
         Pair("图片动画", AnimationDrawableActivity::class.java) ,
         Pair("协程", CoroutinesActivity::class.java),
         Pair("EasyMock", EasyMockActivity::class.java),
-        Pair("王者荣耀", HeroListActivity::class.java)
-
+        Pair("王者荣耀", HeroListActivity::class.java),
+        Pair("ViewBinding", ViewBindActivity::class.java)
     )
     private fun initView(){
         map.forEach {
