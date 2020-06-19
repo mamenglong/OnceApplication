@@ -3,7 +3,9 @@ package com.mml.onceapplication
 import android.app.Application
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class OnceApplication: Application() {
     companion object{
         var instances:Application?=null
